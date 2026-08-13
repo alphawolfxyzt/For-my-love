@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Asifuna ♡ Mari — Our Little Universe</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;height:100%;font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#fff;background:#071018;overflow:hidden}
+body{background:radial-gradient(circle at 50% 15%,#193844 0,#071018 48%,#03070b 100%);min-height:100vh}
+button{font:inherit;color:inherit;border:0;cursor:pointer}
+.screen{height:100vh;min-height:100vh;overflow:hidden;display:none;position:relative;overflow:hidden}.screen.active{display:block}
+#earth{display:flex;align-items:center;justify-content:center;text-align:center}
+.stars{position:absolute;inset:0;background-image:radial-gradient(#fff 1px,transparent 1px),radial-gradient(#fff 1px,transparent 1px);background-size:73px 73px,121px 121px;background-position:10px 20px,40px 70px;opacity:.35;animation:drift 25s linear infinite}
+@keyframes drift{to{background-position:180px 100px,0 0}}
+.earthWrap{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:22px}
+.earth{width:min(58vw,260px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 28%,#7ce6ff 0 4%,transparent 5%),radial-gradient(ellipse at 35% 35%,#4caf78 0 12%,transparent 13%),radial-gradient(ellipse at 62% 52%,#55ad75 0 17%,transparent 18%),radial-gradient(ellipse at 42% 73%,#3c916b 0 10%,transparent 11%),radial-gradient(circle at 50% 50%,#1d8bb5 0,#07506d 55%,#032d43 100%);box-shadow:0 0 45px #4bc9e6aa,0 0 120px #36a6b355;animation:float 4s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-10px)}}
+.earthText h1{font-family:Georgia,serif;font-size:clamp(2rem,8vw,4rem);margin:0}.earthText p{opacity:.8;margin:8px 0}
+.enter{padding:13px 25px;border-radius:999px;background:linear-gradient(135deg,#d94f69,#8d3150);box-shadow:0 8px 30px #d94f6955;font-weight:700}
+.houseScreen{height:100vh;overflow:hidden;background:linear-gradient(#12242dcc,#071018 75%),radial-gradient(circle at 50% 15%,#3b5c67,#071018)}
+.house{position:absolute;left:50%;bottom:10%;transform:translateX(-50%);width:min(82vw,520px);height:300px;background:#3b2830;border:4px solid #a66b55;border-radius:8px;box-shadow:0 20px 80px #0008}
+.roof{position:absolute;left:-30px;right:-30px;top:-105px;height:150px;background:#6f3043;clip-path:polygon(50% 0,100% 100%,0 100%);border-bottom:5px solid #d38b67}
+.window{position:absolute;width:85px;height:90px;background:#ffd98a;border:7px solid #6a3c34;box-shadow:0 0 28px #ffd98a99}.window:before{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:5px solid #6a3c34}.window:after{content:"";position:absolute;top:50%;left:0;right:0;border-top:5px solid #6a3c34}.w1{left:35px;top:70px}.w2{right:35px;top:70px}
+.door{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:95px;height:155px;background:#704333;border:5px solid #422a2a;border-radius:8px 8px 0 0;cursor:pointer}.knob{position:absolute;right:13px;top:80px;width:9px;height:9px;background:#e4bd61;border-radius:50%}
+.houseTitle{position:absolute;top:8%;width:100%;text-align:center}.houseTitle h1{font-family:Georgia,serif;font-size:clamp(2rem,8vw,4rem);margin:0}.houseTitle p{opacity:.8}
+.nav{position:fixed;z-index:30;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;pointer-events:none}.nav button{pointer-events:auto;background:#ffffff16;border:1px solid #ffffff22;backdrop-filter:blur(10px);border-radius:999px;padding:9px 13px}
+.room{height:100vh;overflow-y:auto;overflow-x:hidden;padding:72px 18px 28px;max-width:1000px;margin:auto;scrollbar-width:none}.room::-webkit-scrollbar{display:none}.room h1{font-family:Georgia,serif;text-align:center;font-size:clamp(2rem,8vw,3.5rem);margin:5px 0 8px}.sub{text-align:center;opacity:.75;margin:0 auto 25px;max-width:650px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.grid .card{padding:14px;min-height:0}.grid .card button{padding:9px;margin-top:8px}.card{background:#ffffff0d;border:1px solid #ffffff18;border-radius:22px;padding:20px;min-height:130px;backdrop-filter:blur(8px);box-shadow:0 12px 35px #0004}.card button,.bigBtn{width:100%;padding:12px;border-radius:14px;background:linear-gradient(135deg,#b83e5c,#71304d);font-weight:700;margin-top:12px}.icon{font-size:2rem}.message{white-space:pre-wrap;line-height:1.7;background:#fff0f4;color:#391d27;border-radius:22px;padding:22px;margin-top:18px;display:none}.message.show{display:block}
+textarea,input[type=text]{width:100%;border:1px solid #ffffff22;background:#ffffff0c;color:#fff;border-radius:15px;padding:13px;outline:none}textarea{min-height:130px;resize:vertical}.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.row>*{flex:1;min-width:130px}
+.counter{text-align:center;font-size:3rem;font-weight:800;margin:18px}.meter{height:24px;background:#ffffff12;border-radius:99px;overflow:hidden;margin:18px 0}.meter>div{height:100%;width:0;background:linear-gradient(90deg,#d64e72,#ffb56b);transition:width .4s}
+.heartBtn{width:180px;height:180px;margin:10px auto;display:block;border-radius:50%;background:#ffffff0b;border:1px solid #ffffff18;font-size:5rem;box-shadow:0 0 50px #ff5e8c33;transition:.12s}.heartBtn:active{transform:scale(.9)}
+.tree{height:390px;position:relative;overflow:hidden;border-radius:25px;background:linear-gradient(#10202d,#071018)}.trunk{position:absolute;width:24px;height:270px;bottom:0;left:50%;transform:translateX(-50%);background:#7a513d;border-radius:20px}.branch{position:absolute;height:12px;background:#7a513d;border-radius:20px;transform-origin:left}.b1{width:140px;left:50%;bottom:150px;transform:rotate(-28deg)}.b2{width:120px;left:50%;bottom:210px;transform:rotate(27deg)}.b3{width:95px;left:50%;bottom:90px;transform:rotate(24deg)}.leaf{position:absolute;font-size:28px;animation:sway 3s ease-in-out infinite}.l1{left:30%;top:110px}.l2{left:65%;top:80px}.l3{left:43%;top:45px}.l4{left:74%;top:150px}.l5{left:23%;top:190px}@keyframes sway{50%{transform:rotate(8deg) translateY(-4px)}}
+.photos{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}.photo{aspect-ratio:1;border-radius:18px;background:#ffffff0b;border:1px dashed #ffffff35;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center;position:relative}.photo img{width:100%;height:100%;object-fit:cover}.photo span{padding:15px;opacity:.65}.file{display:none}
+.wedding{background:radial-gradient(circle at 50% 25%,#5b3b53,#100d18 60%,#050509);text-align:center}.wedding .room{max-width:900px}.aisle{height:310px;position:relative;margin-top:15px;background:linear-gradient(90deg,#fff0 0 20%,#ead4df 20% 80%,#fff0 80%);clip-path:polygon(25% 0,75% 0,100% 100%,0 100%);display:flex;align-items:flex-end;justify-content:center}.person{position:absolute;bottom:25px;width:72px;height:130px}.head{width:42px;height:42px;border-radius:50%;background:#d49a76;position:absolute;top:0;left:15px}.body{position:absolute;top:38px;left:0;width:72px;height:95px;border-radius:35px 35px 8px 8px;background:#f3e8e5}.groom{left:24%;}.groom .body{background:#263342}.bride{right:24%}.bride .body{background:#fff}.veil{position:absolute;top:0;left:-20px;width:110px;height:120px;border-radius:50%;border:2px solid #fff8;background:#fff2}
+.ringBox{margin:20px auto;width:130px;height:95px;background:#9a3851;border-radius:10px;position:relative;box-shadow:0 15px 40px #0007;cursor:pointer}.ringLid{position:absolute;left:0;right:0;top:-35px;height:45px;background:#b84962;border-radius:10px 10px 4px 4px;transform-origin:bottom;transition:.7s}.ringBox.open .ringLid{transform:rotateX(125deg)}.ring{display:none;font-size:5rem;animation:ringIn 1.2s ease forwards}.ringBox.open + .ring{display:block}@keyframes ringIn{from{transform:translateY(40px) scale(.2);opacity:0}to{transform:none;opacity:1}}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:50}.confetti i{position:absolute;width:8px;height:15px;animation:fall 2.8s linear forwards}@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+.small{font-size:.9rem;opacity:.65}.hidden{display:none!important}
+
+/* ANIMATION UPGRADE */
+.screen{animation:none}
+#earth{background:radial-gradient(circle at 50% 30%,#152b3a 0,#050a10 62%,#020407 100%)}
+#earth .earth{cursor:pointer;transition:transform 1.4s cubic-bezier(.2,.8,.2,1),filter 1.2s}
+#earth.zooming .earth{transform:scale(8);filter:brightness(1.8);opacity:.15}
+#earth.zooming .earthWrap{animation:earthExit 1.5s forwards}
+@keyframes earthExit{to{transform:scale(1.2);opacity:0}}
+.cityScreen{height:100vh;overflow:hidden;background:linear-gradient(#26384d,#101827 48%,#090d15);position:relative}
+.citySky{position:absolute;inset:0;background:linear-gradient(#304c63 0%,#172737 55%,#0a1119 100%);overflow:hidden}
+.citySky:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 75% 18%,#ffe4a0 0 3%,transparent 4%),linear-gradient(180deg,transparent 65%,#070a0f 66%);opacity:.8}
+.cityBuildings{position:absolute;bottom:0;left:0;right:0;height:58%;display:flex;align-items:flex-end;gap:5px;justify-content:center}
+.cityBuilding{width:8%;min-width:32px;background:#182431;border:1px solid #304354;position:relative;animation:buildingRise .8s backwards}
+.cityBuilding:after{content:"";position:absolute;inset:10px 7px;background:repeating-linear-gradient(90deg,#ffd98a 0 5px,transparent 5px 13px),repeating-linear-gradient(0deg,#ffd98a 0 4px,transparent 4px 17px);opacity:.5}
+@keyframes buildingRise{from{transform:translateY(100%);opacity:0}to{transform:none;opacity:1}}
+.cityRoad{position:absolute;bottom:-5%;left:38%;width:24%;height:45%;background:#15191e;transform:perspective(200px) rotateX(45deg);box-shadow:0 0 0 3px #31343a}
+.cityRoad:after{content:"";position:absolute;top:0;bottom:0;left:48%;border-left:5px dashed #f2c86b}
+.cityHouse{position:absolute;z-index:4;bottom:7%;left:50%;transform:translateX(-50%) scale(.85);width:min(62vw,390px);height:220px;background:#4b3032;border:4px solid #9a6650;box-shadow:0 25px 70px #0009;transition:transform .8s}
+.cityHouse:hover{transform:translateX(-50%) scale(.9)}
+.cityRoof{position:absolute;left:-25px;right:-25px;top:-85px;height:115px;background:#713849;clip-path:polygon(50% 0,100% 100%,0 100%);border-bottom:5px solid #c78364}
+.cityDoor{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:76px;height:125px;background:#673f34;border:4px solid #382528;cursor:pointer;transform-origin:left;transition:transform 1.8s cubic-bezier(.2,.8,.2,1)}
+.cityDoor.open{transform:translateX(-50%) perspective(500px) rotateY(-82deg)}
+.cityWindow{position:absolute;top:55px;width:70px;height:65px;background:#ffe39b;border:5px solid #633d35;box-shadow:0 0 25px #ffe39b88}
+.cityWindow.a{left:28px}.cityWindow.b{right:28px}
+.cityLabel{position:absolute;z-index:6;top:8%;left:0;right:0;text-align:center;color:#fff;text-shadow:0 3px 20px #000;font-family:Georgia,serif}
+.cityLabel h1{font-size:clamp(2rem,8vw,3.6rem);margin:0}
+.animatedRoom .card{animation:cardIn .55s backwards;transition:transform .25s,box-shadow .25s}
+.animatedRoom .card:hover{transform:translateY(-7px) scale(1.02);box-shadow:0 18px 45px #0007}
+@keyframes cardIn{from{opacity:0;transform:translateY(35px) scale(.94)}to{opacity:1;transform:none}}
+.heartBtn{animation:heartFloat 2.2s ease-in-out infinite;position:relative}
+.heartBtn:after{content:"";position:absolute;inset:-15px;border:2px solid #ff7d9f55;border-radius:50%;animation:pulse 1.6s infinite}
+@keyframes heartFloat{50%{transform:translateY(-10px) scale(1.04)}}
+@keyframes pulse{50%{transform:scale(1.16);opacity:0}}
+.flyingHeart{position:fixed;z-index:70;pointer-events:none;font-size:24px;animation:flyHeart 1s ease-out forwards}
+@keyframes flyHeart{from{transform:translate(0,0) scale(.5);opacity:1}to{transform:translate(var(--x),-170px) rotate(var(--r)) scale(1.6);opacity:0}}
+.tree{background:linear-gradient(#102b35,#071018);box-shadow:inset 0 0 60px #0007}
+.trunk{transform-origin:bottom;animation:treeGrow 1.4s cubic-bezier(.2,.8,.2,1)}
+@keyframes treeGrow{from{height:0}to{height:270px}}
+.growingLeaf{animation:leafBloom .8s cubic-bezier(.2,1.5,.5,1) backwards}
+@keyframes leafBloom{from{transform:scale(0) rotate(-30deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.message{animation:letterOpen .5s ease}
+@keyframes letterOpen{from{opacity:0;transform:rotateX(-25deg) translateY(-12px)}to{opacity:1;transform:none}}
+textarea,input{transition:border-color .25s,box-shadow .25s}
+textarea:focus,input:focus{border-color:#ff7a9b;box-shadow:0 0 0 3px #ff7a9b18}
+.nav button{transition:transform .2s,background .2s}.nav button:hover{transform:translateX(-3px);background:#ffffff24}
+.nav .homeBtn{padding:10px 16px;background:linear-gradient(135deg,#b94362,#70304c);box-shadow:0 8px 25px #0005}
+.wedding .aisle{animation:aisleIn 1.2s ease}
+@keyframes aisleIn{from{opacity:0;transform:scaleY(.4)}to{opacity:1;transform:none}}
+.person{animation:personIn 1.2s .3s backwards}
+@keyframes personIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+.ringBox{transition:transform .3s}.ringBox:hover{transform:translateY(-5px) rotate(-1deg)}
+.confetti i{animation-duration:3.2s}
+</style>
+</head>
+<body>
+
+<section id="earth" class="screen active">
+<div class="stars"></div><div class="earthWrap">
+<div class="earth" aria-label="Earth" onclick="enterEarth()"></div>
+<div class="earthText"><h1>Asifuna ♡ Mari</h1><p>Somewhere on this little Earth, there are two people who found each other.</p>
+<button class="enter" onclick="enterEarth()">Find our home ✨</button></div>
+</div>
+</section>
+
+
+<section id="city" class="screen cityScreen">
+<div class="citySky"><div class="cityBuildings">
+<div class="cityBuilding" style="height:48%;animation-delay:.05s"></div><div class="cityBuilding" style="height:67%;animation-delay:.12s"></div><div class="cityBuilding" style="height:42%;animation-delay:.19s"></div><div class="cityBuilding" style="height:80%;animation-delay:.26s"></div><div class="cityBuilding" style="height:55%;animation-delay:.33s"></div><div class="cityBuilding" style="height:73%;animation-delay:.4s"></div><div class="cityBuilding" style="height:46%;animation-delay:.47s"></div></div><div class="cityRoad"></div></div>
+<div class="nav"><button class="homeBtn" onclick="go('earth')">← Space</button></div><div class="cityLabel"><h1>Somewhere in the city… 🌃</h1><p>Our little home is waiting.</p></div>
+<div class="cityHouse"><div class="cityRoof"></div><div class="cityWindow a"></div><div class="cityWindow b"></div><div class="cityDoor" id="cityDoor" onclick="enterHouse()"></div></div>
+</section>
+<section id="house" class="screen houseScreen">
+<div class="stars"></div><div class="houseTitle"><h1>Our Little Home</h1><p>Tap the door and come inside.</p></div>
+<div class="house"><div class="roof"></div><div class="window w1"></div><div class="window w2"></div><div class="door" onclick="go('hall')"><span class="knob"></span></div></div>
+
+
+
+<div class="weddingEggWrap" title="Something is hiding here...">
+  <button id="weddingEgg" class="weddingEgg" onclick="tapWeddingEgg()" aria-label="Hidden wedding surprise">
+    <span class="eggIcon">🔑</span>
+  </button>
+  <div class="eggLabel">a little key...</div>
+</div>
+<style>
+.weddingEggWrap{position:absolute;right:24px;bottom:24px;z-index:50;text-align:center}
+.weddingEgg{width:54px;height:54px;border:1px solid #ffd8e544;border-radius:18px;background:linear-gradient(145deg,#ffffff12,#ff87aa12);color:#ffe4ec;cursor:pointer;box-shadow:0 6px 22px #0006,0 0 20px #ff8eae22;animation:keyFloat 2.4s ease-in-out infinite;transition:.25s}
+.weddingEgg:hover{transform:scale(1.1) rotate(-4deg);box-shadow:0 8px 30px #ff8eae55}
+.eggIcon{font-size:25px;display:block}
+.eggLabel{font-size:10px;margin-top:5px;opacity:.55;color:#ffe4ec}
+.weddingEgg.found{animation:keyFound .8s forwards}
+@keyframes keyFloat{50%{transform:translateY(-5px)}}
+@keyframes keyFound{50%{transform:scale(1.35) rotate(12deg);filter:drop-shadow(0 0 18px #ffd1df)}100%{transform:scale(1)}}
+</style>
+<script>
+let weddingEggTaps=0;
+function tapWeddingEgg(){
+  weddingEggTaps++;
+  const e=document.getElementById('weddingEgg');
+  const label=document.querySelector('.eggLabel');
+  if(e){e.classList.add('found');setTimeout(()=>e.classList.remove('found'),800);}
+  if(weddingEggTaps===1 && label)label.textContent='hmm…';
+  if(weddingEggTaps===2 && label)label.textContent='one more…';
+  if(weddingEggTaps>=3){
+    if(label)label.textContent='✨ found!';
+    setTimeout(()=>go('wedding'),650);
+  }
+}
+</script>
+</section>
+
+<section id="hall" class="screen"><div class="nav"><button class="homeBtn" onclick="go('house')">← Outside</button></div>
+<div class="room homeRoom"><div class="homeAurora"></div><div class="homeStars"></div>
+<div class="homeTop"><span class="homeKicker">WELCOME HOME</span><h1>Our Little Universe</h1><p>Asifuna ❤️ Mari</p><div class="homeLine"></div><small>Every room holds a little piece of our story.</small></div>
+
+<div class="homeWeddingEggWrap">
+  <button id="homeWeddingEgg" class="homeWeddingEgg" onclick="openHomeWeddingEgg()" aria-label="A special hidden surprise">
+    <span class="eggSpark">✦</span>
+    <span class="eggText">for you, Mari</span>
+    <span class="eggHeart">♡</span>
+  </button>
+  <div id="homeEggHint" class="homeEggHint">there's something special here…</div>
+</div>
+<style>
+.homeWeddingEggWrap{text-align:center;margin:10px auto 24px;position:relative;z-index:20}
+.homeWeddingEgg{position:relative;display:inline-flex;align-items:center;gap:10px;padding:12px 22px;border:1px solid #ffc6d944;border-radius:999px;background:linear-gradient(135deg,#ffffff0d,#ff9fbe12);color:#ffe5ed;box-shadow:0 8px 28px #0004,0 0 22px #ff9ab522;backdrop-filter:blur(10px);cursor:pointer;transition:.3s;overflow:hidden}
+.homeWeddingEgg:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 10px 34px #0005,0 0 30px #ff9ab955}
+.homeWeddingEgg:active{transform:scale(.96)}
+.eggSpark{font-size:17px;animation:eggTwinkle 1.8s infinite}
+.eggText{font-family:Georgia,serif;font-size:14px;letter-spacing:.3px}
+.eggHeart{font-size:19px;opacity:.8}
+.homeEggHint{margin-top:7px;font-size:10px;opacity:.35;letter-spacing:.5px;color:#ffdbe5}
+.homeWeddingEgg.opening{animation:eggOpen .7s forwards}
+@keyframes eggTwinkle{50%{transform:rotate(18deg) scale(1.18);text-shadow:0 0 14px #ffd1df}}
+@keyframes eggOpen{50%{transform:scale(1.08);box-shadow:0 0 45px #ff9fbeaa}100%{transform:scale(1);}}
+</style>
+<script>
+function openHomeWeddingEgg(){
+  const b=document.getElementById('homeWeddingEgg');
+  const h=document.getElementById('homeEggHint');
+  if(b)b.classList.add('opening');
+  if(h)h.textContent='a little surprise… ✨';
+  setTimeout(()=>go('wedding'),750);
+}
+</script>
+<div class="homeCards"><button class="homeCard" onclick="go('wishes')"><span>🌌</span><b>Make a Wish</b><small>Leave a star for us</small></button><button class="homeCard" onclick="go('timeline')"><span>🕰️</span><b>Our Timeline</b><small>From 2022 to today</small></button>
+<button class="homeCard" onclick="go('story')"><span>📖</span><b>Our Story</b><small>How it all began</small></button>
+<button class="homeCard" onclick="go('open')"><span>💌</span><b>Open When</b><small>Little messages for every mood</small></button>
+<button class="homeCard" onclick="go('diary')"><span>📓</span><b>Our Diary</b><small>Leave something for each other</small></button>
+<button class="homeCard" onclick="go('tree')"><span>🌳</span><b>Love Tree</b><small>Watch it grow</small></button>
+<button class="homeCard" onclick="go('game')"><span>❤️</span><b>Heart Game</b><small>Send some love</small></button>
+<button class="homeCard" onclick="go('surprise')"><span>🎁</span><b>Surprise</b><small>Something is waiting</small></button>
+<button class="homeCard" onclick="go('quiz')"><span>🧠</span><b>Our Quiz</b><small>How well do we know each other?</small></button>
+
+</div>
+<div class="homeFooter">🍒 <span>made with love</span> 🥝</div>
+<style>
+.homeRoom{position:relative;max-width:1100px;background:radial-gradient(circle at 50% 10%,#4c2940 0,#1a1522 42%,#08090e 100%);border-radius:0}
+.homeStars{position:absolute;inset:0;opacity:.35;background-image:radial-gradient(#fff 1px,transparent 1px),radial-gradient(#ffd8e5 1px,transparent 1px);background-size:67px 67px,113px 113px;animation:homeStarMove 24s linear infinite}
+@keyframes homeStarMove{to{background-position:100px 70px,-80px 90px}}
+.homeAurora{position:absolute;left:10%;right:10%;top:0;height:52%;background:radial-gradient(ellipse,#c75d8033,transparent 65%);filter:blur(20px);animation:aurora 6s ease-in-out infinite}
+@keyframes aurora{50%{transform:scale(1.08);opacity:.65}}
+.homeTop{position:relative;z-index:2;text-align:center;padding:5vh 12px 2vh}
+.homeKicker{font-size:.7rem;letter-spacing:5px;opacity:.65}.homeTop h1{font-family:Georgia,serif;font-size:clamp(2.4rem,8vw,4.6rem);margin:8px 0 0;background:linear-gradient(90deg,#fff,#ffd4df,#fff);-webkit-background-clip:text;color:transparent}.homeTop p{font-family:Georgia,serif;font-size:1.3rem;margin:5px 0;color:#ffd7e1}.homeTop small{opacity:.65}.homeLine{width:80px;height:2px;margin:14px auto;background:linear-gradient(90deg,transparent,#ff9bb5,transparent)}
+.homeCards{position:relative;z-index:3;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px 5% 10px;max-width:1000px;margin:auto}
+.homeCard{min-height:110px;padding:16px 10px;border-radius:22px;border:1px solid #ffffff20;background:linear-gradient(145deg,#ffffff10,#ffffff05);box-shadow:0 12px 30px #0005;backdrop-filter:blur(12px);color:#fff;text-align:center;cursor:pointer;transition:.3s;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.homeCard:hover{transform:translateY(-7px) scale(1.025);background:linear-gradient(145deg,#ff799b20,#ffffff0b);border-color:#ff9db844;box-shadow:0 18px 40px #0007,0 0 25px #ff6f9c18}
+.homeCard span{font-size:2rem;filter:drop-shadow(0 5px 10px #0005);margin-bottom:6px}.homeCard b{font-size:1rem}.homeCard small{font-size:.7rem;opacity:.58;margin-top:3px}
+.homeFooter{text-align:center;opacity:.55;font-size:.75rem;letter-spacing:2px;padding:8px}
+@media(max-width:850px){.homeCards{grid-template-columns:repeat(2,1fr);padding:10px 5%}.homeCard{min-height:88px;padding:9px}.homeCard span{font-size:1.5rem}.homeTop{padding-top:5vh}}
+@media(max-height:700px){.homeTop{padding-top:4vh;padding-bottom:1vh}.homeCards{gap:8px;padding-top:5px}.homeCard{min-height:73px;padding:7px}.homeCard span{font-size:1.35rem;margin-bottom:2px}.homeFooter{padding:3px}}
+</style></div></section>
+
+<section id="open" class="screen"><div class="nav"><button class="homeBtn" onclick="go('hall')">⌂ Home</button></div><div class="room animatedRoom"><h1>Open When… 💌</h1><p class="sub">Little messages for the moments when you need them.</p><div class="grid">
+<div class="card"><div class="icon">😢</div><b>You're sad</b><button class="bigBtn" onclick="showMsg('sad')">Open 💌</button></div>
+<div class="card"><div class="icon">🥺</div><b>You miss me</b><button class="bigBtn" onclick="showMsg('miss')">Open 💌</button></div>
+<div class="card"><div class="icon">😡</div><b>You're angry</b><button class="bigBtn" onclick="showMsg('angry')">Open 💌</button></div>
+<div class="card"><div class="icon">😴</div><b>You're tired</b><button class="bigBtn" onclick="showMsg('tired')">Open 💌</button></div>
+<div class="card"><div class="icon">😊</div><b>You're happy</b><button class="bigBtn" onclick="showMsg('happy')">Open 💌</button></div>
+<div class="card"><div class="icon">💗</div><b>You need love</b><button class="bigBtn" onclick="showMsg('love')">Open 💌</button></div></div>
+<div id="openMsg" class="message card" style="display:none;max-width:650px;margin:18px auto;text-align:center"></div>
+<div class="card" style="margin-top:18px"><b>Write your own 💌</b><textarea id="customLetter" placeholder="Write something for each other..."></textarea><button class="bigBtn" onclick="saveLetter()">Save letter</button><div id="savedLetter" class="message"></div></div></div></section>
+
+<section id="diary" class="screen"><div class="nav"><button class="homeBtn" onclick="go('hall')">⌂ Home</button></div><div class="room animatedRoom"><h1>Our Little Diary 📖</h1><p class="sub">A private little place for thoughts, memories and random moments. Entries stay in this browser.</p>
+<div class="card"><input id="diaryTitle" type="text" placeholder="Title / date"><br><br><textarea id="diaryText" placeholder="Write anything..."></textarea><button class="bigBtn" onclick="addDiary()">Add to diary</button></div><div id="diaryList" style="margin-top:16px"></div></div></section>
+
+<section id="tree" class="screen"><div class="nav"><button class="homeBtn" onclick="go('hall')">⌂ Home</button></div><div class="room animatedRoom"><h1>Our Love Tree 🌳</h1><p class="sub">Every tap plants another little memory.</p><div class="treeGame"><div id="treeVisual" class="treeVisual"><div class="treeGround"></div><div class="treeTrunk"></div><div id="treeLeaves"></div></div><div class="treeStats"><b id="leafCount">0</b> leaves planted</div><div class="row"><button class="bigBtn" onclick="growTree()">🍒 Plant a leaf</button><button class="bigBtn resetTree" onclick="resetTree()">🌱 Reset</button></div><p id="treeMessage">Let's grow something beautiful together. 🥝</p></div>
+<style>.treeGame{max-width:650px;margin:auto;text-align:center}.treeVisual{height:50vh;min-height:280px;max-height:500px;position:relative;overflow:hidden;border-radius:28px;background:radial-gradient(circle at 50% 35%,#20474a,#0a1820 72%);border:1px solid #ffffff15;box-shadow:inset 0 0 80px #0007}.treeGround{position:absolute;bottom:0;left:5%;right:5%;height:24px;border-radius:50%;background:#173c32}.treeTrunk{position:absolute;bottom:18px;left:50%;width:34px;height:62%;transform:translateX(-50%);border-radius:18px 18px 7px 7px;background:linear-gradient(90deg,#4c2d22,#8b5435,#45291f);transform-origin:bottom;animation:trunkGrow 1.1s ease-out}.treeTrunk:before,.treeTrunk:after{content:"";position:absolute;background:#65402c;border-radius:20px;transform-origin:bottom}.treeTrunk:before{width:22px;height:120px;left:-18px;bottom:48%;transform:rotate(-38deg)}.treeTrunk:after{width:20px;height:105px;right:-18px;bottom:55%;transform:rotate(40deg)}@keyframes trunkGrow{from{transform:translateX(-50%) scaleY(0)}to{transform:translateX(-50%) scaleY(1)}}.treeLeaf{position:absolute;font-size:25px;animation:leafBloom .65s cubic-bezier(.2,1.5,.5,1);filter:drop-shadow(0 5px 8px #0005)}@keyframes leafBloom{from{transform:scale(0) rotate(-35deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}</style></div></section>
+
+<section id="meter" class="screen"><div class="nav"><button class="homeBtn" onclick="go('hall')">⌂ Home</button></div><div class="room animatedRoom"><h1>Love Meter ❤️</h1><p class="sub">Scientifically questionable. Emotionally accurate.</p><div class="counter" id="meterNum">0%</div><div class="meter"><div id="meterBar"></div></div><button class="bigBtn" onclick="chargeLove()">Measure our love</button><div class="card" style="margin-top:20px;text-align:center">Current diagnosis: <b id="diagnosis">waiting for Mari...</b></div></div></section>
+
+<section id="game" class="screen"><div class="nav"><button class="homeBtn" onclick="go('hall')">⌂ Home</button></div><div class="room animatedRoom"><h1>Catch My Heart ❤️</h1><p class="sub">Tap the moving heart. Every tap is another little “I love you.”</p><div id="heartArena"><button id="heartButton" class="heartBtn" onclick="heartTap()">❤️</button></div><div class="counter" id="heartCount">0</div><p style="text-align:center" id="gameText">Ready?</p><button class="bigBtn" onclick="resetGame()">Reset ❤️</button></div>
+<style>#heartArena{height:48vh;min-height:250px;position:relative;display:flex;align-items:center;justify-content:center;border-radius:30px;background:radial-gradient(circle,#ff719c18,transparent 65%),#ffffff06;border:1px solid #ffffff12;overflow:hidden}.heartBtn{border:0;background:none;font-size:clamp(4rem,18vw,8rem);cursor:pointer;filter:drop-shadow(0 10px 25px #ff507766);animation:heartFloat 2s ease-in-out infinite}.heartBtn:active{transform:scale(.8)!important}.gameHeart{position:absolute;pointer-events:none;font-size:28px;animation:gameHeartFly .9s ease-out forwards}@keyframes gameHeartFly{to{transform:translate(var(--x),var(--y)) scale(1.5) rotate(30deg);opacity:0}}</style></section>
+
+<section id="surprise" class="screen"><div class="nav"><button class="homeBtn" onclick="go('hall')">⌂ Home</button></div><div class="room animatedRoom"><h1>Surprise Room 🎁</h1><p class="sub">Something sweet is hiding inside.</p><div class="giftStage" id="giftStage"><div class="giftGlow"></div><div class="giftBox" id="giftBox" onclick="openMagicGift()"><div class="giftLid"><span>🎀</span></div><div class="giftBody"><i></i><b></b></div></div><div class="giftBurst">✨</div><div class="gifts" id="giftList"><div class="miniGift">🍒<b>A cherry</b><small>something sweet</small></div><div class="miniGift">🥝<b>A kiwi</b><small>Mari's favorite</small></div><div class="miniGift">💌<b>A letter</b><small>from Asifuna</small></div><div class="miniGift">✨<b>A promise</b><small>more memories</small></div></div><p id="giftNote">Tap the box. 🎁</p></div>
+<style>.giftStage{min-height:65vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}.giftGlow{position:absolute;width:260px;height:260px;border-radius:50%;background:#ff739c25;filter:blur(35px);animation:giftGlow 2s infinite}@keyframes giftGlow{50%{transform:scale(1.3);opacity:.5}}.giftBox{width:175px;height:145px;position:relative;cursor:pointer;z-index:3;animation:giftIdle 2s ease-in-out infinite}.giftBody{position:absolute;inset:18px 0 0;border-radius:10px;background:linear-gradient(135deg,#c74b6c,#712b4a);box-shadow:0 25px 50px #0008;overflow:hidden}.giftBody i{position:absolute;left:72px;top:0;width:31px;height:100%;background:#ffd36d}.giftBody b{position:absolute;left:0;top:54px;width:100%;height:28px;background:#ffd36d}.giftLid{position:absolute;z-index:5;left:-8px;top:0;width:191px;height:45px;border-radius:11px;background:#dc5a79;transform-origin:left bottom;transition:1.1s cubic-bezier(.2,.8,.2,1)}.giftLid span{font-size:45px;position:absolute;left:61px;top:-37px;transition:.8s}.giftBox.open .giftLid{transform:rotate(-24deg) translate(-35px,-52px)}.giftBox.open .giftLid span{transform:translateY(-65px) rotate(25deg);opacity:0}.giftBox.open{animation:boxOpen .7s forwards}@keyframes boxOpen{50%{transform:scale(1.08)}100%{transform:scale(1)}}.giftBurst{position:absolute;font-size:55px;opacity:0}.giftStage.revealed .giftBurst{animation:giftBurst 1.2s forwards}@keyframes giftBurst{0%{opacity:0;transform:scale(.2)}35%{opacity:1;transform:scale(1.5)}100%{opacity:0;transform:scale(2) translateY(-80px)}}.gifts{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;max-width:620px;margin-top:25px;opacity:0;transform:translateY(25px) scale(.9);transition:.8s;z-index:4}.giftStage.revealed .gifts{opacity:1;transform:none}.miniGift{width:115px;padding:14px 8px;border-radius:18px;background:#ffffff0d;border:1px solid #ffffff1c;display:flex;flex-direction:column;gap:4px;text-align:center}.miniGift small{opacity:.55;font-size:.7rem}</style></div></section>
+
+<section id="photos" class="screen"><div class="nav"><button class="homeBtn" onclick="go('hall')">⌂ Home</button></div><div class="room animatedRoom"><h1>Our Memories 📸</h1><p class="sub">Choose photos whenever you want. They are stored locally in this browser.</p><div class="card"><input class="file" id="photoInput" type="file" accept="image/*" multiple><button class="bigBtn" onclick="document.getElementById('photoInput').click()">Add photos 📷</button></div><div class="photos" id="photoGrid" style="margin-top:16px"></div></div></section>
+
+<section id="story" class="screen"><div class="nav"><button class="homeBtn" onclick="go('hall')">⌂ Home</button></div><div class="room animatedRoom"><h1>How It Started 🕰️</h1><div class="card" style="line-height:1.8">
+<p><b>February 2022 — Roblox.</b></p>
+<p>One night, Asif was playing YouTuber Tycoon when he noticed Mari being bullied. He helped her, and the two of them started playing together. A friendship began.</p>
+<p>A few days later, Asif came back from school. Mari asked if he had been the person playing with her. He said no — he had been at school. She told him that someone had said they liked her, and she had replied, “me too.”</p>
+<p>Asif realized he couldn't keep it hidden. He confessed his feelings.</p>
+<p>And somehow, from one Roblox night and one act of kindness, <b>Asifuna and Mari</b> became boyfriend and girlfriend — and best friends too.</p>
+<p style="text-align:center;font-size:1.3rem">🌍 Long distance, but never far in the heart. 🍒🥝</p>
+</div><div class="card" style="margin-top:16px;text-align:center"><b>Mari's words</b><p style="font-style:italic;line-height:1.7">“I love how patient, kind, loving and forgiving you are… you're not just my bf, you're my best friend.”</p><p>And Asif loves Mari's eyes and smile. 💗</p></div></div></section>
+
+<section id="quiz" class="screen"><div class="nav"><button class="homeBtn" onclick="go('hall')">⌂ Home</button></div><div class="room animatedRoom"><h1>How Well Do We Know Us? 🧠❤️</h1><p class="sub">A tiny quiz about our story.</p><div id="quizCard" class="card quizCard"></div>
+<style>.quizCard{max-width:650px;margin:30px auto;text-align:center;border-radius:25px;padding:25px}.quizOption{display:block;width:100%;margin:10px 0;padding:14px;border-radius:15px;border:1px solid #ffffff1c;background:#ffffff0b;color:#fff;cursor:pointer;transition:.25s}.quizOption:hover{transform:translateY(-2px);background:#ff729b20}</style>
+<script>
+const quizQuestions=[
+ {q:'Where did Asifuna and Mari first meet?',a:['Roblox','School','A café','Minecraft'],c:0},
+ {q:'What game was Asif playing when he first helped Mari?',a:['YouTuber Tycoon','Blox Fruits','Brookhaven','BedWars'],c:0},
+ {q:'What was Mari doing when Asif first noticed her?',a:['Being bullied','Building a house','Winning a race','Trading'],c:0},
+ {q:'What did Asif do when he saw Mari being bullied?',a:['Helped her','Left the game','Reported everyone','Logged out'],c:0},
+ {q:'What happened after they played together?',a:['They became friends','They stopped talking','They joined different games','They traded items'],c:0},
+ {q:'Where was Asif when Mari later asked if it was him playing with her?',a:['At school','At home','At a party','On a trip'],c:0},
+ {q:'What did Mari tell Asif someone had said to her?',a:['That he liked her','That he was leaving','That he won a game','That he needed help'],c:0},
+ {q:'What did Asif do after finding out?',a:['Confessed his feelings','Changed the subject','Logged off','Asked for a game pass'],c:0},
+ {q:'What nickname does Asif use for Mari?',a:['Mari','Mimi','Ria','Mara'],c:0},
+ {q:'What nickname does Mari have for Asif?',a:['Asifuna','Ashi','Wolfy','Ace'],c:0},
+ {q:'What is Mari’s favorite fruit?',a:['Kiwi','Apple','Mango','Cherry'],c:0},
+ {q:'What fruit theme is paired with kiwi on the website?',a:['Cherry','Mango','Apple','Peach'],c:0},
+ {q:'What does Mari love hearing from Asif?',a:['His voice','His keyboard','His game sounds','His alarm'],c:0},
+ {q:'What does Mari value about Asif?',a:['His patience and kindness','His gaming rank','His money','His fashion'],c:0},
+ {q:'What kind of relationship do Asif and Mari have?',a:['Long-distance','Next-door neighbors','Classmates','Coworkers'],c:0},
+ {q:'What year did Asif and Mari first meet?',a:['2022','2020','2023','2024'],c:0},
+ {q:'Which game brought Asif and Mari together?',a:['Roblox','Minecraft','Pokémon','Blox Fruits'],c:0},
+ {q:'What does the Love Tree represent?',a:['Their growing memories','Their game level','A real tree','Their favorite season'],c:0},
+ {q:'What is waiting at the end of the website story?',a:['A wedding proposal','A treasure map','A game over screen','A birthday cake'],c:0},
+ {q:'What are Asifuna and Mari’s website colors inspired by?',a:['Cherry and kiwi','Ocean and lemon','Grape and mint','Apple and peach'],c:0}
+];
+let quizIndex=0,quizScore=0;
+function renderQuiz(){const q=quizQuestions[quizIndex],card=document.getElementById('quizCard');if(!card)return;card.innerHTML='<div style="opacity:.6">Question '+(quizIndex+1)+' / '+quizQuestions.length+'</div><h2>'+q.q+'</h2>'+q.a.map((x,i)=>'<button class="quizOption" onclick="answerQuiz('+i+')">'+x+'</button>').join('');}
+function answerQuiz(i){if(i===quizQuestions[quizIndex].c)quizScore++;quizIndex++;if(quizIndex>=quizQuestions.length){document.getElementById('quizCard').innerHTML='<h2>✨ Quiz complete! ✨</h2><h1>'+quizScore+' / '+quizQuestions.length+'</h1><p>'+(quizScore===quizQuestions.length?'Okay, you know us REALLY well. ❤️':'Not bad! More memories needed. 🍒🥝')+'</p><button class="bigBtn" onclick="quizIndex=0;quizScore=0;renderQuiz()">Play again</button>';}else renderQuiz();}
+document.addEventListener('DOMContentLoaded',renderQuiz);
+</script></div></section>
+<section id="timeline" class="screen"><div class="nav"><button class="homeBtn" onclick="go('hall')">⌂ Home</button></div>
+<div class="room animatedRoom"><h1>Our Little Timeline 🕰️</h1><p class="sub">Turn the pages of our story.</p>
+<div class="timelineBook" id="timelineBook"><div class="timelinePage"><span class="time">FEBRUARY 2022 🌙</span><h2>The Beginning</h2><p>One night on Roblox, Asif was playing YouTuber Tycoon and noticed Mari being bullied. He helped her, and two strangers slowly became friends.</p></div></div>
+<button class="bigBtn" onclick="nextTimeline()">Turn the page →</button>
+<style>
+.timelineBook{max-width:650px;min-height:330px;margin:30px auto;padding:42px;border-radius:25px;background:linear-gradient(145deg,#fff8ed,#ead8bf);color:#3b2b25;box-shadow:0 25px 70px #0008;transform-style:preserve-3d}.timelinePage{animation:pageIn .7s ease}.time{font-size:.8rem;letter-spacing:2px;opacity:.65}.timelinePage h2{font-family:Georgia,serif;font-size:2rem}.timelinePage p{font-size:1.05rem;line-height:1.8}@keyframes pageIn{from{opacity:0;transform:rotateY(-18deg) translateX(20px)}to{opacity:1;transform:none}}
+</style></div></section>
+<script>
+const timelinePages=[
+['FEBRUARY 2022 🌙','The Beginning','One night on Roblox, Asif was playing YouTuber Tycoon and noticed Mari being bullied. He helped her, and two strangers slowly became friends.'],
+['A FEW DAYS LATER 💌','The Confession','Mari asked if Asif had been playing with her. He had actually been at school. When she mentioned someone liking her, Asif finally confessed his own feelings.'],
+['THE YEARS BETWEEN 🌎','Our Long Distance Story','Different places, late conversations, little arguments, forgiveness, laughter and countless memories — somehow the distance never erased the connection.'],
+['TODAY ✨','Still Us','From a random Roblox night to everything you have built together. Cherry, kiwi, memories, dreams — and a whole little world made just for Mari.']
+];
+let timelineIndex=0;
+function nextTimeline(){timelineIndex=(timelineIndex+1)%timelinePages.length;const p=timelinePages[timelineIndex];document.getElementById('timelineBook').innerHTML='<div class="timelinePage"><span class="time">'+p[0]+'</span><h2>'+p[1]+'</h2><p>'+p[2]+'</p></div>';}
+</script>
+
+<section id="wishes" class="screen"><div class="nav"><button class="homeBtn" onclick="go('hall')">⌂ Home</button></div>
+<div class="room animatedRoom"><h1>Make a Wish 🌌</h1><p class="sub">Tap the sky and leave a little star for us.</p>
+<div class="wishSky" id="wishSky" onclick="makeWish(event)">
+<div class="wishMoon">☾</div>
+<div class="constellation" id="constellation">
+<span class="cStar s1">✦</span><span class="cStar s2">✦</span><span class="cStar s3">✦</span><span class="cStar s4">✦</span><span class="cStar s5">✦</span><span class="cStar s6">✦</span><span class="cStar s7">✦</span>
+<svg viewBox="0 0 500 300" preserveAspectRatio="none"><polyline points="70,210 140,130 210,190 275,90 345,150 405,70 440,205"/></svg>
+</div>
+<div class="wishMessage" id="wishMessage">Make a wish, Mari…</div>
+</div>
+<div class="wishCount"><b id="wishCount">0</b> stars for us</div>
+<button class="bigBtn" onclick="resetWishes(event)">🌠 Reset the sky</button>
+<style>
+.wishSky{height:65vh;min-height:350px;position:relative;overflow:hidden;border-radius:30px;background:radial-gradient(circle at 50% 25%,#38255b,#090b1c 68%,#03040b);border:1px solid #ffffff14;cursor:crosshair;box-shadow:inset 0 0 100px #000b}
+.wishMoon{position:absolute;right:8%;top:8%;font-size:65px;color:#fff1c9;text-shadow:0 0 35px #fff1c977;pointer-events:none}
+.wishMessage{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:Georgia,serif;font-size:clamp(1.1rem,4vw,2rem);color:#fff;opacity:.8;text-align:center;pointer-events:none;z-index:4;transition:.5s}
+.wishStar{position:absolute;color:#fff6b5;font-size:20px;animation:starPop .8s ease-out forwards;text-shadow:0 0 14px #fff3a8;z-index:3;pointer-events:none}
+@keyframes starPop{from{opacity:0;transform:scale(0) rotate(-45deg)}60%{opacity:1;transform:scale(1.5)}to{opacity:1;transform:scale(1)}}
+.constellation{position:absolute;inset:0;opacity:0;transform:scale(.6);transition:1.4s;pointer-events:none;z-index:2}
+.constellation svg{position:absolute;inset:20% 15%;width:70%;height:55%;overflow:visible}
+.constellation polyline{fill:none;stroke:#fff0b8;stroke-width:2;stroke-dasharray:600;stroke-dashoffset:600;filter:drop-shadow(0 0 7px #fff0b8)}
+.cStar{position:absolute;color:#fff6b5;font-size:28px;text-shadow:0 0 18px #fff1a8}
+.s1{left:14%;top:66%}.s2{left:28%;top:39%}.s3{left:42%;top:59%}.s4{left:55%;top:25%}.s5{left:69%;top:45%}.s6{left:81%;top:18%}.s7{left:88%;top:64%}
+.wishSky.complete .constellation{opacity:1;transform:scale(1)}
+.wishSky.complete .constellation polyline{animation:drawConstellation 2s ease forwards}
+.wishSky.complete .wishMessage{opacity:1;top:82%;text-shadow:0 0 20px #fff1c9}
+@keyframes drawConstellation{to{stroke-dashoffset:0}}
+</style></div>
+<script>
+let wishes=0;
+function makeWish(e){
+ if(e.target.closest('button')||e.target.closest('.wishMoon')||e.target.closest('.constellation'))return;
+ const sky=document.getElementById('wishSky');
+ if(sky.classList.contains('complete'))return;
+ const star=document.createElement('span');
+ star.className='wishStar';star.textContent='✦';
+ star.style.left=Math.max(4,e.offsetX-10)+'px';
+ star.style.top=Math.max(4,e.offsetY-10)+'px';
+ sky.appendChild(star);
+ wishes++;
+ document.getElementById('wishCount').textContent=wishes;
+ const msg=document.getElementById('wishMessage');
+ if(wishes<3)msg.textContent='Another little wish… ✨';
+ else if(wishes<6)msg.textContent='Our sky is getting brighter. ❤️';
+ else if(wishes===6)msg.textContent='One more star…';
+ if(wishes>=7){
+   sky.classList.add('complete');
+   msg.textContent='Some wishes are worth waiting for. ✨';
+   if(typeof burst==='function')burst(35);
+ }
+}
+function resetWishes(e){
+ e.stopPropagation();
+ wishes=0;
+ const sky=document.getElementById('wishSky');
+ sky.classList.remove('complete');
+ sky.querySelectorAll('.wishStar').forEach(x=>x.remove());
+ document.getElementById('wishCount').textContent='0';
+ document.getElementById('wishMessage').textContent='Make a wish, Mari…';
+}
+</script></div></section>
+<section id="wedding" class="screen wedding"><div class="nav"><button class="homeBtn" onclick="go('hall')">⌂ Home</button></div><div class="room weddingRoom"><div class="wStars"></div><div class="wMoon">☾</div><div class="wHeader"><span>THE LAST CHAPTER</span><h1>Asifuna &amp; Mari</h1><p>One little universe. One very special question.</p></div><div class="ceremony"><div class="petal p1">🌸</div><div class="petal p2">🌸</div><div class="petal p3">🌸</div><div class="aisle"><div class="aisleGlow"></div><div class="person groom"><div class="head"></div><div class="body"></div></div><div class="person bride"><div class="head"></div><div class="body"></div><div class="veil"></div></div></div></div><div class="wCard"><div class="tiny">FROM A ROBLOX NIGHT IN 2022</div><h2>And then… there was you. ❤️</h2><p>After every conversation, every laugh, every difficult day and every memory, there is one more thing I want to ask.</p><div class="ringBox" id="weddingBox" onclick="openWedding()"><div class="ringLid"></div></div><div class="ring" id="ring">💍</div><div id="proposal" class="proposalCard" style="display:none"><h2>Mari, will you be with me? ❤️</h2><p>Choose your answer…</p><div class="proposalBtns"><button id="yesBtn" class="yesBtn" onclick="sayYes()">YES ❤️</button><button id="noBtn" class="noBtn" onclick="runAway(event)">NO</button></div></div><p id="weddingText" class="wHint">Tap the little box to open it.</p></div></div>
+<style>.proposalCard{margin:12px auto 0;max-width:480px;padding:15px;border-radius:22px;background:#ffffff10;border:1px solid #ffffff22;animation:proposalPop .7s cubic-bezier(.2,1.4,.5,1)}.proposalBtns{display:flex;gap:10px;justify-content:center;min-height:52px}.proposalBtns button{flex:1;border-radius:14px;padding:12px;font-weight:800}.yesBtn{background:linear-gradient(135deg,#d95578,#8f365b);box-shadow:0 8px 25px #d9557855}.noBtn{background:#ffffff0c!important;border:1px solid #ffffff1c;position:relative}.ring.wearing{position:fixed;z-index:90;left:50%;top:50%;font-size:min(30vw,190px);display:block;pointer-events:none;animation:ringWear 1.9s cubic-bezier(.2,.8,.2,1) forwards}@keyframes ringWear{0%{transform:translate(-50%,-50%) scale(.1);opacity:0}35%{transform:translate(-50%,-50%) scale(3);opacity:1}65%{transform:translate(-50%,-50%) scale(1.5)}100%{transform:translate(-50%,-50%) scale(1);opacity:1}}.wCard{position:relative;z-index:3}</style></section>
+<div id="confetti" class="confetti"></div>
+
+<script>
+const messages={
+sad:"Mari, if you're reading this because you're sad, come here for a second. You don't have to fix everything right now. Take a breath. Remember that somewhere in this world Asifuna is cheering for you, caring about you, and wanting you to smile again. 🍒🥝❤️",
+miss:"If you miss me, remember that distance is only the space between two places. It doesn't erase what we have. From Roblox in 2022 to now, you're still my favorite person to come home to. 🌍❤️",
+angry:"If you're angry, take your time. We don't have to win an argument — we just have to understand each other. You're my girlfriend and my best friend, and I'd rather choose you than choose being right. 🍒",
+tired:"Rest, Mari. You don't have to be strong every second. Put the world down for a little while. Your Asifuna is sending you a tiny virtual forehead pat and a giant kiwi. 🥝",
+happy:"You're happy?! Then I need to celebrate too. Keep that smile safe because your smile is one of the things Asif loves most about you. ✨🍒🥝",
+love:"You are loved. Not because you have to earn it, not because you have to be perfect. Just because you're Mari. And somewhere, Asifuna is smiling because you exist. ❤️"
+};
+
+function enterEarth(){
+ const e=document.getElementById('earth');e.classList.add('zooming');
+ setTimeout(()=>go('city'),1200);
+}
+function enterHouse(){
+ const d=document.getElementById('cityDoor');d.classList.add('open');
+ setTimeout(()=>go('hall'),1450);
+}
+function go(id){
+ const target=document.getElementById(id);
+ if(!target)return;
+ document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+ target.classList.add('active');
+ document.documentElement.scrollTop=0;
+ document.body.scrollTop=0;
+ const room=target.querySelector('.room');
+ if(room)room.scrollTop=0;
+ if(id==='diary')renderDiary();
+ if(id==='tree')renderTree();
+ if(id==='photos')renderPhotos();
+}
+function showMsg(k){const el=document.getElementById('openMsg');if(!el)return;el.style.display='block';el.classList.remove('show');void el.offsetWidth;el.classList.add('show');el.innerHTML='<h2>For Mari 💌</h2><p>'+messages[k]+'</p><button class="bigBtn" onclick="this.parentElement.style.display=\'none\'">Close</button>'}
+function resetGame(){hearts=0;document.getElementById('heartCount').textContent=0;document.getElementById('gameText').textContent='Ready?'}
+let love=0;function chargeLove(){love=Math.min(100,love+Math.floor(Math.random()*25)+15);document.getElementById('meterNum').textContent=love+'%';document.getElementById('meterBar').style.width=love+'%';document.getElementById('diagnosis').textContent=love<50?'warming up...':love<90?'dangerously in love 💕':'completely gone for each other 💍';if(love===100)burst()}
+function openSurprise(){document.getElementById('dummyBox').classList.add('open');setTimeout(()=>{document.getElementById('surpriseText').textContent='Surprise! 🍒🥝 You found a little reminder: no matter how far apart we are, I would still choose the girl I met on that Roblox night. ❤️';burst()},500)}
+function openWedding(){const b=document.getElementById('weddingBox');if(!b)return;b.classList.add('open');setTimeout(()=>{const ring=document.getElementById('ring'),proposal=document.getElementById('proposal');if(ring)ring.style.display='block';if(proposal){proposal.style.display='block';proposal.classList.remove('proposalPop');void proposal.offsetWidth;proposal.classList.add('proposalPop')}const txt=document.getElementById('weddingText');if(txt)txt.textContent='The ring is waiting. What will Mari choose? ❤️';burst(20)},700)}
+</script>
+
+<style id="viewport-repair">
+html,body{width:100%;height:100%;margin:0;overflow:hidden}
+.screen{display:none !important;width:100%;height:100vh;min-height:100vh;position:relative;overflow:hidden}
+.screen.active{display:block !important}
+#earth.active{display:flex !important;align-items:center;justify-content:center}
+.cityScreen.active{display:block !important}
+.houseScreen.active{display:block !important}
+.room{height:100%;max-height:100vh;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+.room::-webkit-scrollbar{display:none}
+</style>
+
+
+<div id="musicControl"><button onclick="toggleAmbient()" id="musicBtn">♫ Music</button></div>
+<style>
+#musicControl{position:fixed;z-index:100;right:14px;bottom:14px}
+#musicBtn{padding:11px 17px;border:1px solid #ffffff2d;border-radius:999px;background:linear-gradient(135deg,#bd4564cc,#6e3159cc);box-shadow:0 8px 25px #0006;backdrop-filter:blur(12px);font-weight:700;transition:.25s}
+#musicBtn:hover{transform:translateY(-2px) scale(1.03)}
+</style>
+<script>
+let audioCtx=null,musicGain=null,musicTimer=null,musicOn=false;
+function toggleAmbient(){
+ if(!audioCtx){audioCtx=new (window.AudioContext||window.webkitAudioContext)();musicGain=audioCtx.createGain();musicGain.gain.setValueAtTime(Number(localStorage.getItem('mariMusicVolume')||45)/100,audioCtx.currentTime);musicGain.connect(audioCtx.destination)}
+ if(audioCtx.state==='suspended')audioCtx.resume();
+ if(musicOn){musicOn=false;clearInterval(musicTimer);document.getElementById('musicBtn').textContent='♫ Music';return}
+ musicOn=true;document.getElementById('musicBtn').textContent='♫ Playing';
+ let step=0;
+ const melody=[261.63,329.63,392,329.63,293.66,349.23,440,349.23,261.63,329.63,392,523.25,440,392,329.63,293.66];
+ const playNote=(freq,dur=.8,when=0)=>{
+   const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+   o.type='sine';o.frequency.setValueAtTime(freq,audioCtx.currentTime+when);
+   g.gain.setValueAtTime(.0001,audioCtx.currentTime+when);
+   g.gain.exponentialRampToValueAtTime(.24,audioCtx.currentTime+when+.08);
+   g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+when+dur);
+   o.connect(g);g.connect(musicGain);o.start(audioCtx.currentTime+when);o.stop(audioCtx.currentTime+when+dur+.05);
+ };
+ const chord=[261.63,329.63,392];
+ const loop=()=>{
+   if(!musicOn)return;
+   playNote(melody[step%melody.length],.72);
+   if(step%4===0) chord.forEach((n,j)=>playNote(n,.9,j*.025));
+   step++;
+ };
+ loop();musicTimer=setInterval(loop,760);
+}
+</script>
+
+<style id="final-design">
+button,.bigBtn,.enter{position:relative;overflow:hidden}
+button:before,.bigBtn:before,.enter:before{content:"";position:absolute;top:0;left:-120%;width:70%;height:100%;background:linear-gradient(90deg,transparent,#ffffff30,transparent);transform:skewX(-20deg);transition:left .6s}
+button:hover:before,.bigBtn:hover:before,.enter:hover:before{left:150%}
+button:active,.bigBtn:active,.enter:active{transform:scale(.96)}
+.bigBtn,.enter{border:1px solid #ffffff1c!important;box-shadow:0 9px 25px #0005}
+.resetTree{background:linear-gradient(135deg,#315d65,#29404a)!important}
+</style>
+
+<div id="settingsPanel" class="settingsPanel" aria-hidden="true">
+<div class="settingsCard"><button class="closeSettings" onclick="toggleSettings()">×</button><h3>⚙️ Little Settings</h3>
+<label for="volumeSlider">Music volume <span id="volumeValue">45%</span></label>
+<input id="volumeSlider" type="range" min="0" max="300" value="45" step="1" oninput="setMusicVolume(this.value)">
+<div class="volumeLabels"><span>Mute</span><span>Normal</span><span>Very loud</span><span>Extreme</span></div>
+</div></div>
+<button id="settingsButton" onclick="toggleSettings()" aria-label="Settings">⚙️</button>
+<style>
+#settingsButton{position:fixed;z-index:110;left:14px;bottom:14px;width:44px;height:44px;border-radius:50%;border:1px solid #ffffff25;background:#ffffff10;backdrop-filter:blur(12px);box-shadow:0 8px 25px #0006}
+.settingsPanel{position:fixed;z-index:120;inset:0;background:#0007;backdrop-filter:blur(5px);display:none;align-items:flex-end;justify-content:center;padding:20px}
+.settingsPanel.show{display:flex}
+.settingsCard{position:relative;width:min(440px,92vw);padding:22px;border:1px solid #ffffff20;border-radius:25px;background:linear-gradient(145deg,#2b1d2d,#11121b);box-shadow:0 25px 80px #0009}
+.settingsCard h3{font-family:Georgia,serif;font-size:1.5rem;margin-top:0}.settingsCard label{display:flex;justify-content:space-between;margin-bottom:12px}
+#volumeSlider{width:100%;accent-color:#e25b7e;height:7px}.volumeLabels{display:flex;justify-content:space-between;font-size:.65rem;opacity:.6;margin-top:7px}
+.closeSettings{position:absolute;right:12px;top:10px;border:0;background:#ffffff10;border-radius:50%;width:34px;height:34px;font-size:1.2rem}
+</style>
+<script>
+function toggleSettings(){const p=document.getElementById('settingsPanel');p.classList.toggle('show');p.setAttribute('aria-hidden',p.classList.contains('show')?'false':'true')}
+function setMusicVolume(v){
+ const n=Number(v), label=document.getElementById('volumeValue'); if(label)label.textContent=n===0?'Muted':n+'%';
+ if(musicGain && audioCtx){musicGain.gain.setTargetAtTime(Math.min(n/100,3),audioCtx.currentTime,.04)}
+ localStorage.setItem('mariMusicVolume',n);
+}
+document.addEventListener('DOMContentLoaded',()=>{
+ const saved=localStorage.getItem('mariMusicVolume');
+ if(saved!==null){const sl=document.getElementById('volumeSlider');sl.value=saved;setMusicVolume(saved)}
+});
+</script>
+\n<script>
+window.heartTap=function(){const c=document.getElementById('heartCount'),a=document.getElementById('heartArena');if(!c||!a)return;window.hearts=(window.hearts||0)+1;c.textContent=window.hearts;const h=document.createElement('span');h.className='gameHeart';h.textContent=window.hearts%5===0?'🥝':'❤️';h.style.left=(45+Math.random()*10)+'%';h.style.top=(45+Math.random()*10)+'%';h.style.setProperty('--x',(Math.random()*220-110)+'px');h.style.setProperty('--y',(-100-Math.random()*100)+'px');a.appendChild(h);setTimeout(()=>h.remove(),900);if(window.hearts%10===0){const t=document.getElementById('gameText');if(t)t.textContent='Another 10! More love for Mari. 💗'}};
+window.resetGame=function(){window.hearts=0;const c=document.getElementById('heartCount'),t=document.getElementById('gameText');if(c)c.textContent='0';if(t)t.textContent='Ready?'};
+window.openMagicGift=function(){const b=document.getElementById('magicGift'),st=b&&b.closest('.giftStage');if(!b||!st)return;b.classList.add('open');st.classList.add('revealed');const n=document.getElementById('giftNote');if(n)n.textContent='Surprise! Four little gifts from Asifuna. 🍒🥝💌✨';if(typeof burst==='function')burst(25)};
+window.openWedding=function(){const b=document.getElementById('weddingBox');if(!b)return;b.classList.add('open');setTimeout(()=>{const r=document.getElementById('ring'),p=document.getElementById('proposal'),t=document.getElementById('weddingText');if(r)r.style.display='block';if(p){p.style.display='block';p.classList.remove('proposalPop');void p.offsetWidth;p.classList.add('proposalPop')}if(t)t.textContent='The ring is waiting. What will Mari choose? ❤️';if(typeof burst==='function')burst(20)},700)};
+window.runAway=function(e){if(e)e.preventDefault();const b=document.getElementById('noBtn');if(!b)return;b.style.transform=`translate(${Math.random()*280-140}px,${Math.random()*170-85}px) rotate(${Math.random()*24-12}deg)`;const t=document.getElementById('weddingText');if(t)t.textContent='Nope! That button is running away 😂❤️'};
+window.sayYes=function(){const p=document.getElementById('proposal'),r=document.getElementById('ring'),t=document.getElementById('weddingText');if(p)p.style.display='none';if(t)t.innerHTML='<b>YES! ❤️</b><br>Then come here, Mari…';if(r){r.style.display='block';r.classList.add('wearing')}if(typeof burst==='function')burst(50);setTimeout(()=>{if(t)t.innerHTML='<b>She said YES! 💍❤️</b><br>Congratulations, Mari &amp; Asifuna!'},1900)};
+</script>\n<script>
+let treeLeaves=Number(localStorage.getItem('mariTreeLeaves')||0);
+function renderTree(){
+ const holder=document.getElementById('treeLeaves'),count=document.getElementById('leafCount');if(!holder||!count)return;
+ count.textContent=treeLeaves;holder.innerHTML='';
+ const n=Math.min(treeLeaves,80);
+ for(let i=0;i<n;i++){const leaf=document.createElement('span');leaf.className='treeLeaf';leaf.textContent=i%4===0?'🥝':'🍒';leaf.style.left=(25+((i*37)%50))+'%';leaf.style.top=(12+((i*29)%55))+'%';leaf.style.animationDelay=(i*.025)+'s';holder.appendChild(leaf);}
+}
+function growTree(){treeLeaves++;localStorage.setItem('mariTreeLeaves',treeLeaves);renderTree();if(typeof burst==='function')burst(6)}
+function resetTree(){treeLeaves=0;localStorage.setItem('mariTreeLeaves','0');renderTree()}
+</script>
+<script>
+function openMagicGift(){
+  const box=document.getElementById('giftBox');
+  const stage=document.getElementById('giftStage');
+  if(!box || !stage) return;
+  if(box.classList.contains('open')) return;
+  box.classList.add('open');
+  stage.classList.add('revealed');
+  const note=document.getElementById('giftNote');
+  if(note) note.textContent='You found all four surprises! 🍒🥝💌✨';
+  const burst=stage.querySelector('.giftBurst');
+  if(burst){ burst.style.animation='none'; void burst.offsetWidth; burst.style.animation='giftBurst 1.2s forwards'; }
+  const gifts=stage.querySelectorAll('.miniGift');
+  gifts.forEach((g,i)=>{g.style.animationDelay=(0.15+i*0.16)+'s';});
+  if(typeof window.burst==='function') window.burst(25);
+}
+</script>
